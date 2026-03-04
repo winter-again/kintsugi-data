@@ -12,6 +12,13 @@ dependencies = [
     "polars>=1.38.1",
 ]
 
+[build-system]
+requires = ["uv_build>=0.10.4,<0.11.0"]
+build-backend = "uv_build"
+
+[project.scripts]
+kintsugi-data = "kintsugi_data.cli:main"
+
 [tool.basedpyright]
 include = ["src"]
 
