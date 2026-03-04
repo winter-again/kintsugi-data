@@ -38,13 +38,13 @@ def main(argv: Sequence[str] | None = None) -> int:
         help="Download shapefile data for a given year and geography from Census Bureau's FTP site",
     )
     parser_geo.add_argument(
-        "year", type=int, default=2024, help="Year of shapefile data"
-    )
-    parser_geo.add_argument(
         "geo",
         type=str,
         default="county",
         help="Geography of shapefile data: 'county' or 'state' ",
+    )
+    parser_geo.add_argument(
+        "year", type=int, default=2024, help="Year of shapefile data"
     )
     parser_geo.add_argument(
         "-o", "--output", type=Path, help="Desired location of the downloaded file"
@@ -74,13 +74,13 @@ def get_ftp_file(args: CommandArgs) -> None:
 
 
 def get_shapefile(args: CommandArgs) -> None:
+    url = f"ftp://ftp2.census.gov/geo/tiger/GENZ{args.year}/shp/cb_{args.year}_us_{args.geo}_5m.zip"
     if args.output is None:
-        file_name = args.url.split("/")[-1]
+        file_name = url.split("/")[-1]
         output = Path.cwd() / file_name
     else:
         output = args.output
 
-    url = f"ftp://ftp2.census.gov/geo/tiger/GENZ{args.year}/shp/cb_{args.year}_us_{args.geo}_5m.zip"
     try:
         with urllib.request.urlopen(url) as r, open(output, "wb") as f:  # pyright: ignore [reportAny]
             shutil.copyfileobj(r, f)  # pyright: ignore [reportAny]
